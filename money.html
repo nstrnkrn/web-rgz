@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ПСБ</title>
+        <link rel="stylesheet" href="main.css">
+        <link rel="apple-touch-icon"  href="../favicon.ico">
+        <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+      
+       <style>
+      .cituation{
+        border: 1px solid rgb(7, 5, 5);
+            padding: 25px;
+            border-radius: 30px;
+            margin: 33px;
+            box-shadow: 10px 10px 5px rgb(17, 8, 8);
+      }
+      .text {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+      }
+      .two{
+                margin: 20px;
+                border: 1px solid;
+                border-radius: 7px;
+                padding: 7px;
+                width: 1000px;
+                color: white;
+            }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            background-color: #393535;
+            color: #ebe8e8;
+            padding: 12px;
+            left: 0;
+            height: 100%;
+            position: fixed;
+         }
+         .sidebar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 2px;
+         }
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+        .sidebar a {
+            color: #ece6e6;
+            text-decoration: none;
+         }
+
+        .sidebar a:hover {
+            color: #ccc;
+        }
+        .content {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 190px;
+            
+         }
+        .cont {
+        max-width: 500px;
+        margin: 0 auto;
+        }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    input, select {
+      padding: 5px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+        </style>
+    </head>
+        <body>
+            <div class="container">
+                <div class="sidebar">
+                  <ul>
+                    <li><a href="1.html">О компании</a></li>
+                    <li><a href="news.html">Новости</a></li>
+                    <li><a href="money.html">Курс валют</a></li>
+                    <li><a href="map.html">Контактные данные</a></li>
+                    <li><a href="#">Видео</a></li>
+                  </ul>
+                </div>
+            <div class="cont">
+                <div class="cont">
+                    <h1>Курс валют</h1>
+                    <label for="amount">Сумма:</label>
+                    <input type="number" id="amount" value="1000" min="0" step="0.01">
+                    <br>
+                    <label for="from">Из:</label>
+                    <select id="from">
+                      <option value="RUB">Российский рубль</option>
+                      <option value="CNY">Китайский юань</option>
+                    </select>
+                    <br>
+                    <label for="to">В:</label>
+                    <select id="to">
+                      <option value="RUB">Российский рубль</option>
+                      <option value="CNY">Китайский юань</option>
+                    </select>
+                    <br>
+                    <button onclick="convertCurrency()">Конвертировать</button>
+                    <div id="result"></div>
+                  </div>
+    <script>
+                async function getCurrencyRates() {
+        const response = await fetch('https://www.cbr-xml-daily.ru/daily_json.js');
+        const data = await response.json();
+        return data.Valute;
+        }
+
+        async function convertCurrency() {
+        const amount = parseFloat(document.getElementById('amount').value);
+        const fromCurrency = document.getElementById('from').value;
+        const toCurrency = document.getElementById('to').value;
+
+        if (isNaN(amount) || amount <= 0) {
+            document.getElementById('result').textContent = 'Пожалуйста, введите положительное число.';
+            return;
+        }
+
+        const rates = await getCurrencyRates();
+        const fromRate = fromCurrency === 'RUB' ? 1 : rates['CNY'].Value;
+        const toRate = toCurrency === 'RUB' ? 1 : rates['CNY'].Value;
+        const convertedAmount = (amount / fromRate) * toRate;
+
+        document.getElementById('result').textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
+        }
+    </script>
+        <header>
+       
+        </header>
+       
+
+        <footer>
+            <hr>
+            &copy; ПСБ
+        </footer>
+    </body>
+</html>
